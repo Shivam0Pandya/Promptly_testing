@@ -1,5 +1,6 @@
-import Prompt from '../models/Prompt.js'
+import User from '../models/User.js'
 
 import express from 'express'
 
-//export const creatUser
+//make two functions one for register and one for login
+//implemtent JWT token for authentication

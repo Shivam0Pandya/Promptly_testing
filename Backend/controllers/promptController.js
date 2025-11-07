@@ -1,6 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose';
 import Prompt from '../models/Prompt.js'
+import Workspace from '../models/Workspace.js';
 
 export const addPrompt = async (req, res) => {
   try {
@@ -25,6 +26,8 @@ export const addPrompt = async (req, res) => {
       ],
     });
 
+    workspace.prompts.push(newPrompt._id);
+    await workspace.save();
     res.status(201).json(newPrompt);
   } catch (error) {
     console.error("Error adding prompt:", error);
@@ -51,6 +54,7 @@ export const getPromptById = async (req, res) => {
 
     if (!prompt) return res.status(404).json({ message: "Prompt not found" });
 
+    
     res.json(prompt);
   } catch (error) {
     console.error("Error fetching prompt:", error);

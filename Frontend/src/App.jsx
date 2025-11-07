@@ -6,11 +6,12 @@ import Header from "./components/Layout/Header";
 import Dashboard from "./pages/Dashboard";
 import LibraryView from "./pages/LibraryView";
 import PromptDetailPage from "./pages/PromptDetailPage";
-import ExploreView from "./pages/ExploreView"; // Added previously
+import ExploreView from "./pages/ExploreView"; 
 import ReviewRequestModal from "./components/Modals/ReviewRequestModal";
 import AuthView from "./pages/AuthView";
 import AddWorkspaceModal from "./components/Modals/AddWorkspaceModal";
 import api from "./api/axiosConfig"; 
+ // Required for mongoose.Types.ObjectId.isValid() check
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState("dashboard");
@@ -21,43 +22,40 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("token")
   );
-  const [workspaces, setWorkspaces] = useState([]); // User's workspaces (for Sidebar/Library)
+  // `workspaces` holds all Active Workspaces (Owned + Joined)
+  const [workspaces, setWorkspaces] = useState([]); 
   const [isAddWorkspaceModalOpen, setIsAddWorkspaceModalOpen] = useState(false);
   const [selectedPrompt, setSelectedPrompt] = useState(null);
   
-  // ✅ UPDATED STATE: Global stats renamed for clarity
   const [exploreStats, setExploreStats] = useState({
     totalPrompts: 0,
     totalWorkspaces: 0,
   });
   
-  // ✅ NEW STATE: All workspaces for the Explore Page
   const [allWorkspaces, setAllWorkspaces] = useState([]);
 
 
-  // Load user's workspaces once authenticated
+  // Load active workspaces (owned + joined) once authenticated
   useEffect(() => {
     const fetchWorkspaces = async () => {
       try {
-        const { data } = await api.get("/workspaces");
+        const { data } = await api.get("/workspaces"); 
         setWorkspaces(data);
       } catch (error) {
-        console.error("Error fetching user workspaces:", error);
+        console.error("Error fetching workspaces:", error);
       }
     };
 
     if (isAuthenticated) fetchWorkspaces();
   }, [isAuthenticated]);
   
-  // Fetch global stats & all workspaces (unprotected data fetch)
+  // Fetch global stats & all workspaces (unprotected data fetch for Explore)
   useEffect(() => {
     const fetchExploreData = async () => {
       try {
-        // Fetch global summary stats
         const { data: statsData } = await api.get("/stats"); 
         setExploreStats(statsData);
         
-        // ✅ NEW FETCH: Fetch all workspaces with prompt count from new endpoint
         const { data: allWorkspacesData } = await api.get("/workspaces/all/count");
         setAllWorkspaces(allWorkspacesData);
 
@@ -70,13 +68,11 @@ const App = () => {
   }, [isAuthenticated]); 
 
 
-  // ✅ Called when user logs in successfully
   const handleAuthSuccess = () => {
     setIsAuthenticated(true);
     setCurrentPage("dashboard");
   };
 
-  // ✅ NEW FUNCTION: Handles user logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
@@ -84,7 +80,26 @@ const App = () => {
     setWorkspaces([]); 
     setSelectedWorkspaceId(null);
   };
-  
+
+  // Handles the Join action from the Explore Page
+  const handleJoinWorkspace = async (workspaceId) => {
+    if (!isAuthenticated) return; 
+
+    try {
+        await api.post(`/workspaces/join/${workspaceId}`);
+        
+        // Re-fetch the full list of active workspaces to update sidebar/dashboard
+        const { data } = await api.get("/workspaces"); 
+        setWorkspaces(data);
+
+        // Navigate user to the newly joined workspace/library view
+        handleViewWorkspace(workspaceId);
+
+    } catch (error) {
+        console.error("Error joining workspace:", error.response?.data.message || error.message);
+    }
+  }
+
 
   const handlePageChange = (page) => {
     if (page !== currentPage) {
@@ -110,13 +125,11 @@ const App = () => {
     setViewingPromptId(null)
   };
 
-  // 💡 Updated to correctly handle navigation from Explore page
   const handleViewWorkspace = (workspaceId) => {
     setSelectedWorkspaceId(workspaceId);
     setCurrentPage("library");
   };
   
-  //  When a new workspace is created (from modal)
   const handleAddWorkspace = (newWorkspace) => {
     setWorkspaces((prev) => [...prev, newWorkspace]);
   };
@@ -146,6 +159,7 @@ const App = () => {
             onViewWorkspace={handleViewWorkspace}
             setCurrentPage={handlePageChange}
             searchQuery={searchQuery}
+            activeWorkspaces={workspaces} 
           />
         );
       case "requests":
@@ -172,12 +186,14 @@ const App = () => {
         prompt={selectedPrompt}
         goBackToLibrary={handleBackToLibrary} />;
 
-      // ✅ RENDER EXPLORE VIEW with all data
       case "explore":
         return <ExploreView 
           stats={exploreStats} 
           allWorkspaces={allWorkspaces} 
           onViewWorkspace={handleViewWorkspace}
+          onJoinWorkspace={handleJoinWorkspace} 
+          // cORRECTED PROP: Pass the state variable 'workspaces' for membership check
+          userWorkspaces={workspaces} 
         />;
         
       default:
@@ -185,6 +201,8 @@ const App = () => {
           <Dashboard
             showRequests={() => setIsModalOpen(true)}
             onPromptClick={() => handlePromptSelect(viewingPromptId)}
+            activeWorkspaces={workspaces} 
+            onViewWorkspace={handleViewWorkspace}
           />
         );
     }
@@ -209,7 +227,7 @@ const App = () => {
               currentPage={currentPage}
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
-              onLogout={handleLogout}
+              onLogout={handleLogout} 
             />
             <div id="page-content" className="w-full">
               {renderPage()}

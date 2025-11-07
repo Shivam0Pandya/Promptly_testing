@@ -1,7 +1,7 @@
 import express from 'express'
 import Comment from '../models/Comment.js'
 export const addComment=async(req,res)=>{
-    const{promptId,content}=req.body;
+    const{promptId,text}=req.body;
     const newComment=await Comment.create({
         promptId,
         authorId:req.user_id,

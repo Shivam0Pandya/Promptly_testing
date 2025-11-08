@@ -2,6 +2,13 @@ import express from "express";
 import dotenv from "dotenv"
 import cors from "cors"
 import connectDB from "./config/db.js"
+import { createServer } from "http";
+import { Server as IOServer } from "socket.io";
+const server = createServer(app);
+const io = new IOServer(server, {
+  cors: { origin: process.env.FRONTEND_URL || "*", methods: ["GET","POST"] },
+});
+server.listen(process.env.PORT || 5000);
 
 
 
@@ -13,13 +20,21 @@ import searchRoutes from "./routes/searchRoutes.js";
 
 import { getGlobalStats } from "./controllers/generalController.js";
 
-
+const allowed = [process.env.FRONTEND_URL];
 
 dotenv.config();
 const app = express();
 connectDB();
 
-app.use(cors());
+app.use(cors({
+  origin: (origin, cb) => {
+    if (!origin) return cb(null, true); // allow non-browser (curl)
+    if (!process.env.FRONTEND_URL) return cb(null, true); // dev fallback
+    if (allowed.includes(origin)) return cb(null, true);
+    return cb(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+}));
 app.use(express.json());
 
 app.get("/", (req, res) => {

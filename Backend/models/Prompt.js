@@ -32,5 +32,8 @@ const promptSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 const Prompt = mongoose.model("Prompt", promptSchema);
+// models/Prompt.js  (append near the bottom, after defining schema)
+promptSchema.index({ title: "text", body: "text" }, { weights: { title: 5, body: 1 } });
+
 
 export default Prompt;

@@ -1,57 +1,69 @@
-// Frontend/src/components/Dashboard/ActiveWorkspaces.jsx
-import React from 'react';
-import { HardHat, ChevronRight } from 'lucide-react';
-import Button from '../Common/Button'; 
+// src/components/Dashboard/ActiveWorkspaces.jsx
+import React, { useMemo } from "react";
+import Button from "../Common/Button";
 
-// Functional component for a single workspace card on the Dashboard
-const DashboardWorkspaceCard = ({ workspace, onViewWorkspace }) => {
-    // Determine the label based on the new backend property
-    const statusText = workspace.isOwner ? "Owned" : "Joined";
-
-    return (
-        <div className="bg-surface-card p-4 rounded-lg flex items-center justify-between border border-zinc-700/50">
-            <div className="flex items-center">
-                <HardHat className="w-5 h-5 mr-3 text-accent-teal" />
-                <div>
-                    <h3 className="text-lg font-semibold text-white">{workspace.title}</h3>
-                    <p className="text-xs text-zinc-400">
-                        {statusText} | {workspace.prompts.length} Prompts
-                    </p>
-                </div>
-            </div>
-            
-            <Button
-                variant="primary"
-                onClick={() => onViewWorkspace(workspace._id)}
-                className="py-1 px-3"
-            >
-                View <ChevronRight className="w-4 h-4 ml-1" />
-            </Button>
-        </div>
-    );
+/**
+ * ActiveWorkspaces
+ * Props:
+ *   - workspaces: array of workspace objects (active workspaces for the user)
+ *   - onViewWorkspace(workspaceId)
+ *   - searchQuery: string to filter by
+ */
+const WorkspaceCardSmall = ({ workspace, onView }) => {
+  return (
+    <div className="bg-surface-card p-4 rounded-lg flex items-center justify-between border border-zinc-700/50">
+      <div className="min-w-0 pr-4">
+        <h4 className="text-lg font-semibold text-white truncate">{workspace.title}</h4>
+        {workspace.description ? (
+          <p className="text-sm text-zinc-400 truncate">{workspace.description}</p>
+        ) : (
+          <p className="text-sm text-zinc-500">No description</p>
+        )}
+      </div>
+      <div className="ml-4">
+        <Button variant="secondary" onClick={() => onView(workspace._id)}>
+          Open
+        </Button>
+      </div>
+    </div>
+  );
 };
 
+const ActiveWorkspaces = ({ workspaces = [], onViewWorkspace = () => {}, searchQuery = "" }) => {
+  const q = (searchQuery || "").trim().toLowerCase();
 
-const ActiveWorkspaces = ({ workspaces, onViewWorkspace }) => {
-  
+  // Filter by title / description / ownerName
+  const filtered = useMemo(() => {
+    if (!q) return workspaces;
+    return workspaces.filter(ws => {
+      const title = (ws.title || "").toLowerCase();
+      const desc = (ws.description || "").toLowerCase();
+      const owner = (ws.ownerName || ws.owner?.name || "").toLowerCase();
+      return title.includes(q) || desc.includes(q) || owner.includes(q);
+    });
+  }, [workspaces, q]);
+
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-bold text-white">Active Workspaces ({workspaces.length})</h2>
-      
-      {workspaces.length === 0 ? (
-        <p className="text-zinc-500">You haven't created or joined any workspaces yet.</p>
-      ) : (
-        <div className="space-y-3">
-          {workspaces.map(ws => (
-            <DashboardWorkspaceCard 
-                key={ws._id} 
-                workspace={ws} 
-                onViewWorkspace={onViewWorkspace} 
-            />
+    <section className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-semibold text-white">Active Workspaces</h2>
+        <div className="text-sm text-zinc-400">
+          Showing {filtered.length} / {workspaces.length}
+        </div>
+      </div>
+
+      {filtered.length > 0 ? (
+        <div className="grid grid-cols-1 gap-3">
+          {filtered.map(ws => (
+            <WorkspaceCardSmall key={ws._id} workspace={ws} onView={onViewWorkspace} />
           ))}
         </div>
+      ) : (
+        <div className="p-4 text-zinc-400 bg-surface-secondary rounded">
+          {q ? `No active workspaces match “${searchQuery}”.` : "You have no active workspaces yet."}
+        </div>
       )}
-    </div>
+    </section>
   );
 };
 

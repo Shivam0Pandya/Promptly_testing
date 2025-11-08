@@ -222,15 +222,17 @@ const App = () => {
         prompt={selectedPrompt}
         goBackToLibrary={handleBackToLibrary} />;
 
+      // App.jsx (inside renderPage switch -> "explore" case)
       case "explore":
         return <ExploreView 
           stats={exploreStats} 
           allWorkspaces={allWorkspaces} 
           onViewWorkspace={handleViewWorkspace}
           onJoinWorkspace={handleJoinWorkspace} 
-          // cORRECTED PROP: Pass the state variable 'workspaces' for membership check
-          userWorkspaces={workspaces} 
+          userWorkspaces={workspaces}
+          searchQuery={searchQuery}   // <-- add this
         />;
+
         
       default:
         return (

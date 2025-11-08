@@ -9,6 +9,7 @@ import userRoutes from "./routes/userRoutes.js"
 import workspaceRoutes from "./routes/workspaceRoutes.js";
 import promptRoutes from "./routes/promptRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
+import searchRoutes from "./routes/searchRoutes.js";
 
 import { getGlobalStats } from "./controllers/generalController.js";
 
@@ -29,7 +30,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/workspaces", workspaceRoutes);
 app.use("/api/prompts", promptRoutes);
 app.use("/api/comments", commentRoutes);
-
+app.use("/api/search", searchRoutes);
 
 app.get("/api/stats", getGlobalStats);
 

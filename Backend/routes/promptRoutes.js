@@ -1,30 +1,35 @@
+// routes/promptRoutes.js
 import express from "express";
-import  {protect} from "../middleware/authMiddleware.js"
+import { protect } from "../middleware/authMiddleware.js";
 import {
-    addPrompt,
-    getPrompts,
-    getPromptById, // Import the controller function
-    requestPromptUpdate,
-    approvePromptUpdate,
-    rejectPromptUpdate
-} from "../controllers/promptController.js"
+  addPrompt,
+  getPrompts,
+  getPromptById,
+  requestPromptUpdate,
+  approvePromptUpdate,
+  rejectPromptUpdate,
+  getPendingUpdates,   // new export
+} from "../controllers/promptController.js";
 
-const router=express.Router();
+const router = express.Router();
 
+// Public list and creation
 router.route("/")
   .get(getPrompts)
   .post(protect, addPrompt);
 
-// ----------------------------------------------------
-// FIX 1: ADD ROUTE FOR FETCHING A SINGLE PROMPT BY ID
-router.route("/:id") 
-  .get(protect, getPromptById); // IMPORTANT: This route is protected
+// New: pending updates list (owner-only view)
+router.get("/pending", protect, getPendingUpdates);
 
-// ----------------------------------------------------
+// Single prompt (keep protected if you want only authenticated users to view details)
+router.route("/:id")
+  .get(protect, getPromptById);
 
+// Request update: create a new pending update (protected)
 router.route("/:id/request-update")
   .post(protect, requestPromptUpdate);
 
+// Approve / Reject update (protected)
 router.route("/:promptId/approve/:updateId")
   .put(protect, approvePromptUpdate);
 

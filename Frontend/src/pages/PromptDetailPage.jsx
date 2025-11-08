@@ -2,62 +2,95 @@
 import React, { useState, useEffect } from "react";
 import { ThumbsUp, Send, User } from "lucide-react";
 import Button from "../components/Common/Button";
-import axios from "axios";
+import api from "../api/axiosConfig"; // use shared axios config
 
 const PromptDetailPage = ({ prompt, goBackToLibrary }) => {
+  // Local prompt state so we can re-fetch/upsert easily
+  const [promptData, setPromptData] = useState(prompt || null);
+
   const [upvoteCount, setUpvoteCount] = useState(prompt?.upvotes || 0);
   const [hasUpvoted, setHasUpvoted] = useState(false);
+
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [loadingComments, setLoadingComments] = useState(true);
   const [postingComment, setPostingComment] = useState(false);
 
-  const token = localStorage.getItem("token");
+  // Fetch the latest prompt details whenever prompt._id changes
+  useEffect(() => {
+    const fetchPromptDetail = async () => {
+      if (!prompt?._id) return;
+      try {
+        const { data } = await api.get(`/prompts/${prompt._id}`);
+        setPromptData(data);
+        setUpvoteCount(data?.upvotes || 0);
+      } catch (err) {
+        console.error("Error fetching prompt details:", err);
+        // fall back to the passed prompt prop if fetch fails
+        setPromptData(prompt);
+      }
+    };
 
-  // 🧠 Fetch comments from backend
+    fetchPromptDetail();
+  }, [prompt]);
+
+  // Fetch comments from backend when promptData becomes available or its id changes
   useEffect(() => {
     const fetchComments = async () => {
+      if (!promptData?._id) {
+        setComments([]);
+        setLoadingComments(false);
+        return;
+      }
+
       try {
         setLoadingComments(true);
-        const { data } = await axios.get(
-          `http://localhost:5000/api/comments/${prompt._id}`
-        );
-        setComments(data);
+        const { data } = await api.get(`/comments/${promptData._id}`);
+        setComments(data || []);
       } catch (error) {
         console.error("Error fetching comments:", error);
+        setComments([]);
       } finally {
         setLoadingComments(false);
       }
     };
 
-    if (prompt?._id) fetchComments();
-  }, [prompt]);
+    fetchComments();
+  }, [promptData]);
 
-  // 👍 Handle Upvote
-  const handleUpvote = () => {
+  // Handle Upvote (UI-only here; you can call API to persist)
+  const handleUpvote = async () => {
+    // Optimistic UI
     setUpvoteCount((prev) => (hasUpvoted ? prev - 1 : prev + 1));
-    setHasUpvoted(!hasUpvoted);
-    // Optional: send API request to record upvote later
+    setHasUpvoted((prev) => !prev);
+
+    // Optional: persist to server
+    try {
+      await api.post(`/prompts/${promptData._id}/upvote`);
+    } catch (err) {
+      // revert on failure
+      console.error("Failed to persist upvote:", err);
+      setUpvoteCount((prev) => (hasUpvoted ? prev + 1 : prev - 1));
+      setHasUpvoted((prev) => !prev);
+    }
   };
 
-  // 💬 Handle Posting Comment
+  // Post a comment
   const handlePostComment = async () => {
     if (!newComment.trim()) return;
+    if (!promptData?._id) return;
 
     try {
       setPostingComment(true);
-      const { data } = await axios.post(
-        "http://localhost:5000/api/comments",
+      const { data } = await api.post(
+        "/comments",
         {
-          promptId: prompt._id,
+          promptId: promptData._id,
           text: newComment.trim(),
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      // Add new comment instantly in UI
+      // Add new comment instantly in UI; backend should return the created comment
       setComments((prev) => [
         { ...data.comment, authorId: { name: "You" } },
         ...prev,
@@ -65,8 +98,39 @@ const PromptDetailPage = ({ prompt, goBackToLibrary }) => {
       setNewComment("");
     } catch (error) {
       console.error("Error posting comment:", error);
+      // optional: show user-visible error
+      alert(error.response?.data?.message || "Failed to post comment.");
     } finally {
       setPostingComment(false);
+    }
+  };
+
+  // "Request Update" click: open a modal or route to a widget for creating requests.
+  // For now we'll show a simple prompt (quick implementation). Replace with a modal as needed.
+  const handleRequestUpdate = async () => {
+    if (!promptData?._id) return;
+    const proposed = window.prompt("Paste the proposed prompt text (or description):");
+    if (!proposed) return;
+  
+    try {
+      // POST to the endpoint your backend uses
+      const { data } = await api.post(`/prompts/${promptData._id}/request-update`, {
+        body: proposed,   // backend expects `body`
+      });
+    
+      // success feedback
+      alert(data.message || "Request submitted — awaiting review.");
+    
+      // Optionally add the pending update to UI (if backend returns it)
+      // For example, if backend returned pendingUpdate:
+      // setPendingRequests(prev => [data.pendingUpdate, ...prev]);
+    } catch (err) {
+      console.error("Submit request error:", err.response?.data || err.message);
+      alert(
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Failed to submit request."
+      );
     }
   };
 
@@ -79,16 +143,18 @@ const PromptDetailPage = ({ prompt, goBackToLibrary }) => {
         &larr; Back to library
       </button>
 
-      <h1 className="text-3xl font-bold text-text-primary">{prompt?.title || prompt?.task || "Untitled Prompt"}</h1>
+      <h1 className="text-3xl font-bold text-text-primary">
+        {promptData?.title || promptData?.task || "Untitled Prompt"}
+      </h1>
       <p className="text-sm text-zinc-500">
-        Creator: {prompt?.createdBy?.name || "Unknown"} | Upvotes: {upvoteCount}
+        Creator: {promptData?.createdBy?.name || "Unknown"} | Upvotes: {upvoteCount}
       </p>
 
       {/* Prompt Content */}
       <h4 className="text-lg font-semibold text-text-primary">Prompt:</h4>
       <pre className="code-block p-4 rounded-xl text-sm overflow-x-auto text-zinc-200">
         <code className="whitespace-pre-wrap">
-          {prompt?.body || "No content available."}
+          {promptData?.body || "No content available."}
         </code>
       </pre>
 
@@ -102,7 +168,10 @@ const PromptDetailPage = ({ prompt, goBackToLibrary }) => {
           {hasUpvoted ? `Upvoted (${upvoteCount})` : `Upvote (${upvoteCount})`}
         </Button>
 
-        <button className="px-4 py-2 rounded-lg bg-zinc-700 text-white font-semibold flex items-center hover:bg-zinc-600 transition">
+        <button
+          className="px-4 py-2 rounded-lg bg-zinc-700 text-white font-semibold flex items-center hover:bg-zinc-600 transition"
+          onClick={handleRequestUpdate}
+        >
           <Send className="w-4 h-4 mr-2" /> Request Update
         </button>
       </div>

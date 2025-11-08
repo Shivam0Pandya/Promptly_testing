@@ -33,7 +33,8 @@ const App = () => {
   });
   
   const [allWorkspaces, setAllWorkspaces] = useState([]);
-
+  // inside App component:
+  const [pendingCount, setPendingCount] = useState(0);
 
   // Load active workspaces (owned + joined) once authenticated
   useEffect(() => {
@@ -67,6 +68,18 @@ const App = () => {
     fetchExploreData(); 
   }, [isAuthenticated]); 
 
+  const fetchPendingCount = async () => {
+    try {
+      const { data } = await api.get("/prompts/pending?limit=2"); // backend returns { total, items }
+      setPendingCount(data.total || 0);
+    } catch (err) {
+      console.error("Error fetching pending count:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) fetchPendingCount();
+    }, [isAuthenticated]);
 
   const handleAuthSuccess = () => {
     setIsAuthenticated(true);
@@ -134,6 +147,28 @@ const App = () => {
     setWorkspaces((prev) => [...prev, newWorkspace]);
   };
 
+  const handleRequestHandled = async ({ requestId, action, updatedPrompt }) => {
+  // if the currently viewed prompt was affected, refresh it
+  // assume request contains info about prompt id (or updatedPrompt returned)
+  if (action === "Accept") {
+    if (updatedPrompt && updatedPrompt._id === viewingPromptId) {
+      // server returned updated prompt — replace selected prompt
+      setSelectedPrompt(updatedPrompt);
+    } else if (viewingPromptId) {
+      // otherwise re-fetch current prompt from API
+      try {
+        const { data } = await api.get(`/prompts/${viewingPromptId}`);
+        setSelectedPrompt(data);
+      } catch (err) {
+        console.error("Failed to refresh prompt after update:", err);
+      }
+    }
+    fetchPendingCount();
+  }
+  // optionally: also refresh workspace lists / pending counts
+  // e.g. refetch workspaces or pending counts if you display them elsewhere
+};
+
   useEffect(() => {
   const fetchPrompt = async () => {
     if (!viewingPromptId) return;
@@ -160,6 +195,7 @@ const App = () => {
             setCurrentPage={handlePageChange}
             searchQuery={searchQuery}
             activeWorkspaces={workspaces} 
+            pendingCount={pendingCount}
           />
         );
       case "requests":
@@ -237,8 +273,9 @@ const App = () => {
           <ReviewRequestModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
+            onRequestHandled={handleRequestHandled}
           />
-
+          
           <AddWorkspaceModal
             isOpen={isAddWorkspaceModalOpen}
             onClose={() => setIsAddWorkspaceModalOpen(false)}

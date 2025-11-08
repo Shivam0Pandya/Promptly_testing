@@ -4,11 +4,7 @@ import cors from "cors"
 import connectDB from "./config/db.js"
 import { createServer } from "http";
 import { Server as IOServer } from "socket.io";
-const server = createServer(app);
-const io = new IOServer(server, {
-  cors: { origin: process.env.FRONTEND_URL || "*", methods: ["GET","POST"] },
-});
-server.listen(process.env.PORT || 5000);
+
 
 
 
@@ -58,3 +54,9 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
   console.log(`🚀 Server running on port ${PORT}`)
 );
+
+const server = createServer(app);
+const io = new IOServer(server, {
+  cors: { origin: process.env.FRONTEND_URL || "*", methods: ["GET","POST"] },
+});
+server.listen(process.env.PORT || 5000);

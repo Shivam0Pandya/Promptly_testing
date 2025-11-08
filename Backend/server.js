@@ -5,9 +5,6 @@ import connectDB from "./config/db.js"
 import { createServer } from "http";
 import { Server as IOServer } from "socket.io";
 
-
-
-
 import userRoutes from "./routes/userRoutes.js"
 import workspaceRoutes from "./routes/workspaceRoutes.js";
 import promptRoutes from "./routes/promptRoutes.js";
@@ -50,13 +47,22 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Internal Server Error" });
 });
 
-const PORT = process.env.PORT || 5050;
-app.listen(PORT, () =>
-  console.log(`🚀 Server running on port ${PORT}`)
-);
+// --- FIX START HERE ---
 
+const PORT = process.env.PORT || 5050;
+
+// 1. Create the standard HTTP server using Express app
 const server = createServer(app);
+
+// 2. Initialize Socket.IO using the custom HTTP server
 const io = new IOServer(server, {
   cors: { origin: process.env.FRONTEND_URL || "*", methods: ["GET","POST"] },
 });
-server.listen(process.env.PORT || 5050);
+
+// 3. Start the server. This one call handles both Express and Socket.IO on PORT.
+server.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log("⚡ Socket.IO is initialized.");
+});
+
+// --- FIX END HERE ---

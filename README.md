@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ⚡ Promptly: Collaborative Prompt Engineering Platform
 
 Promptly is a state-of-the-art MERN stack application designed to centralize and govern the creation, organization, and sharing of generative AI prompts. It enforces prompt quality through a secure versioning and review workflow, making it the ideal solution for teams looking to standardize their AI inputs.
@@ -154,3 +155,7 @@ npm start
 
 
 The application should now be accessible locally at http://localhost:3000.
+=======
+# Promptly_testing
+Testing of developed website promptly
+>>>>>>> d5ebb643bff723c18b49a9306aa7033c1b256259

@@ -151,6 +151,13 @@ export const joinWorkspace = async (req, res) => {
     workspace.members.push(userId);
     await workspace.save(); // ⬅️ The operation that is likely failing
 
+    // 💡 CRITICAL FIX: Update the User model to track the new workspace
+    const user = await User.findById(userId);
+    if (user && !user.workspaces.includes(workspace._id)) {
+        user.workspaces.push(workspace._id);
+        await user.save();
+    }
+
     res.json({ 
         message: "Successfully joined workspace", 
         workspace: { _id: workspace._id, title: workspace.title }

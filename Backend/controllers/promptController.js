@@ -261,6 +261,9 @@ export const togglePromptUpvote = async (req, res) => {
     const { id } = req.params; // prompt id
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ message: "Invalid prompt ID" });
 
+    // 💡 DEBUG CHECK D: Log the ID received by the server
+    console.log("DEBUG CHECK D: Controller Received ID:", id);
+
     const prompt = await Prompt.findById(id);
     if (!prompt) return res.status(404).json({ message: "Prompt not found" });
 

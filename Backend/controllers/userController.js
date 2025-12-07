@@ -1,7 +1,7 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 
-const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET || 'TESTING_SECRET_KEY', { expiresIn: "7d" });
 
 export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;

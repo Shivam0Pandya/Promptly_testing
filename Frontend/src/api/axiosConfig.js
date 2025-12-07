@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const base = process.env.VITE_API_URL; // uses Vite env var
+const base = "http://localhost:5000/api"; // uses Vite env var
 const api = axios.create({
   baseURL: base,
 });

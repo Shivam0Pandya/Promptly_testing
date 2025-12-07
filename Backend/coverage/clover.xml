@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1765132070268" clover="3.2.0">
-  <project timestamp="1765132070268" name="All files">
-    <metrics statements="256" coveredstatements="111" conditionals="108" coveredconditionals="30" methods="26" coveredmethods="12" elements="390" coveredelements="153" complexity="0" loc="256" ncloc="256" packages="3" files="9" classes="9"/>
+<coverage generated="1765138244501" clover="3.2.0">
+  <project timestamp="1765138244501" name="All files">
+    <metrics statements="255" coveredstatements="155" conditionals="108" coveredconditionals="50" methods="26" coveredmethods="16" elements="389" coveredelements="221" complexity="0" loc="255" ncloc="255" packages="3" files="9" classes="9"/>
     <package name="controllers">
-      <metrics statements="219" coveredstatements="75" conditionals="106" coveredconditionals="28" methods="24" coveredmethods="10"/>
+      <metrics statements="218" coveredstatements="119" conditionals="106" coveredconditionals="48" methods="24" coveredmethods="14"/>
       <file name="promptController.js" path="/home/iiitb/Vidu_SE/SEProject/Mernify/Backend/controllers/promptController.js">
-        <metrics statements="140" coveredstatements="39" conditionals="74" coveredconditionals="18" methods="13" coveredmethods="3"/>
+        <metrics statements="139" coveredstatements="68" conditionals="74" coveredconditionals="30" methods="13" coveredmethods="5"/>
         <line num="8" count="3" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
@@ -38,46 +38,46 @@
         <line num="77" count="0" type="stmt"/>
         <line num="78" count="0" type="stmt"/>
         <line num="83" count="3" type="stmt"/>
-        <line num="84" count="0" type="stmt"/>
-        <line num="85" count="0" type="stmt"/>
-        <line num="86" count="0" type="stmt"/>
-        <line num="87" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="89" count="0" type="stmt"/>
-        <line num="90" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="92" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="84" count="2" type="stmt"/>
+        <line num="85" count="2" type="stmt"/>
+        <line num="86" count="2" type="stmt"/>
+        <line num="87" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="89" count="2" type="stmt"/>
+        <line num="90" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="92" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="93" count="0" type="stmt"/>
         <line num="99" count="0" type="stmt"/>
         <line num="100" count="0" type="stmt"/>
         <line num="101" count="0" type="stmt"/>
         <line num="102" count="0" type="stmt"/>
-        <line num="105" count="0" type="stmt"/>
-        <line num="112" count="0" type="stmt"/>
-        <line num="113" count="0" type="stmt"/>
-        <line num="115" count="0" type="stmt"/>
-        <line num="117" count="0" type="stmt"/>
-        <line num="122" count="0" type="stmt"/>
+        <line num="105" count="2" type="stmt"/>
+        <line num="112" count="2" type="stmt"/>
+        <line num="113" count="2" type="stmt"/>
+        <line num="115" count="2" type="stmt"/>
+        <line num="117" count="2" type="stmt"/>
+        <line num="122" count="2" type="stmt"/>
         <line num="128" count="0" type="stmt"/>
         <line num="129" count="0" type="stmt"/>
         <line num="134" count="3" type="stmt"/>
-        <line num="135" count="0" type="stmt"/>
-        <line num="136" count="0" type="stmt"/>
-        <line num="137" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="135" count="2" type="stmt"/>
+        <line num="136" count="2" type="stmt"/>
+        <line num="137" count="2" type="cond" truecount="3" falsecount="1"/>
         <line num="138" count="0" type="stmt"/>
-        <line num="141" count="0" type="stmt"/>
-        <line num="142" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="144" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="145" count="0" type="stmt"/>
-        <line num="148" count="0" type="stmt"/>
-        <line num="149" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="141" count="2" type="stmt"/>
+        <line num="142" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="144" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="145" count="1" type="stmt"/>
+        <line num="148" count="1" type="stmt"/>
+        <line num="149" count="1" type="cond" truecount="3" falsecount="1"/>
         <line num="150" count="0" type="stmt"/>
-        <line num="153" count="0" type="stmt"/>
-        <line num="154" count="0" type="stmt"/>
-        <line num="161" count="0" type="stmt"/>
-        <line num="162" count="0" type="stmt"/>
-        <line num="163" count="0" type="stmt"/>
-        <line num="165" count="0" type="stmt"/>
-        <line num="167" count="0" type="stmt"/>
-        <line num="169" count="0" type="stmt"/>
+        <line num="153" count="1" type="stmt"/>
+        <line num="154" count="1" type="stmt"/>
+        <line num="161" count="1" type="stmt"/>
+        <line num="162" count="1" type="stmt"/>
+        <line num="163" count="1" type="stmt"/>
+        <line num="165" count="1" type="stmt"/>
+        <line num="167" count="1" type="stmt"/>
+        <line num="169" count="1" type="stmt"/>
         <line num="171" count="0" type="stmt"/>
         <line num="172" count="0" type="stmt"/>
         <line num="177" count="3" type="stmt"/>
@@ -120,23 +120,22 @@
         <line num="251" count="0" type="stmt"/>
         <line num="252" count="0" type="stmt"/>
         <line num="259" count="3" type="stmt"/>
-        <line num="260" count="4" type="stmt"/>
-        <line num="261" count="4" type="stmt"/>
-        <line num="262" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="265" count="3" type="stmt"/>
-        <line num="267" count="3" type="stmt"/>
-        <line num="268" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="270" count="2" type="stmt"/>
-        <line num="271" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="273" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="275" count="1" type="stmt"/>
-        <line num="276" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="277" count="1" type="stmt"/>
-        <line num="278" count="1" type="stmt"/>
-        <line num="281" count="1" type="stmt"/>
-        <line num="282" count="1" type="cond" truecount="2" falsecount="0"/>
-        <line num="283" count="1" type="stmt"/>
-        <line num="284" count="1" type="stmt"/>
+        <line num="260" count="6" type="stmt"/>
+        <line num="261" count="6" type="stmt"/>
+        <line num="262" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="267" count="5" type="stmt"/>
+        <line num="268" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="270" count="4" type="stmt"/>
+        <line num="271" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="273" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="275" count="2" type="stmt"/>
+        <line num="276" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="277" count="2" type="stmt"/>
+        <line num="278" count="2" type="stmt"/>
+        <line num="281" count="2" type="stmt"/>
+        <line num="282" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="283" count="2" type="stmt"/>
+        <line num="284" count="2" type="stmt"/>
         <line num="287" count="0" type="stmt"/>
         <line num="288" count="0" type="stmt"/>
         <line num="293" count="3" type="stmt"/>
@@ -170,7 +169,7 @@
         <line num="49" count="0" type="stmt"/>
       </file>
       <file name="workspaceController.js" path="/home/iiitb/Vidu_SE/SEProject/Mernify/Backend/controllers/workspaceController.js">
-        <metrics statements="60" coveredstatements="20" conditionals="20" coveredconditionals="2" methods="7" coveredmethods="3"/>
+        <metrics statements="60" coveredstatements="35" conditionals="20" coveredconditionals="10" methods="7" coveredmethods="5"/>
         <line num="7" count="2" type="stmt"/>
         <line num="8" count="3" type="stmt"/>
         <line num="9" count="3" type="stmt"/>
@@ -185,9 +184,9 @@
         <line num="29" count="2" type="stmt"/>
         <line num="31" count="2" type="stmt"/>
         <line num="39" count="2" type="stmt"/>
-        <line num="41" count="1" type="stmt"/>
-        <line num="44" count="1" type="stmt"/>
-        <line num="46" count="1" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="44" count="2" type="stmt"/>
+        <line num="46" count="2" type="stmt"/>
         <line num="53" count="2" type="stmt"/>
         <line num="55" count="0" type="stmt"/>
         <line num="59" count="2" type="stmt"/>
@@ -208,25 +207,25 @@
         <line num="120" count="0" type="stmt"/>
         <line num="121" count="0" type="stmt"/>
         <line num="125" count="2" type="stmt"/>
-        <line num="126" count="0" type="stmt"/>
-        <line num="128" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="130" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="126" count="1" type="stmt"/>
+        <line num="128" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="130" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="131" count="0" type="stmt"/>
-        <line num="134" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="134" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="135" count="0" type="stmt"/>
-        <line num="138" count="0" type="stmt"/>
-        <line num="139" count="0" type="stmt"/>
-        <line num="141" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="138" count="1" type="stmt"/>
+        <line num="139" count="1" type="stmt"/>
+        <line num="141" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="142" count="0" type="stmt"/>
-        <line num="146" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="146" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="147" count="0" type="stmt"/>
-        <line num="151" count="0" type="stmt"/>
-        <line num="152" count="0" type="stmt"/>
-        <line num="155" count="0" type="stmt"/>
-        <line num="156" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="157" count="0" type="stmt"/>
-        <line num="158" count="0" type="stmt"/>
-        <line num="161" count="0" type="stmt"/>
+        <line num="151" count="1" type="stmt"/>
+        <line num="152" count="1" type="stmt"/>
+        <line num="155" count="1" type="stmt"/>
+        <line num="156" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="157" count="1" type="stmt"/>
+        <line num="158" count="1" type="stmt"/>
+        <line num="161" count="1" type="stmt"/>
         <line num="168" count="0" type="stmt"/>
         <line num="170" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="171" count="0" type="stmt"/>
@@ -247,7 +246,7 @@
         <metrics statements="11" coveredstatements="10" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
         <line num="4" count="5" type="stmt"/>
         <line num="12" count="5" type="stmt"/>
-        <line num="13" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="12" type="cond" truecount="2" falsecount="0"/>
         <line num="14" count="8" type="stmt"/>
         <line num="15" count="8" type="stmt"/>
         <line num="16" count="8" type="stmt"/>

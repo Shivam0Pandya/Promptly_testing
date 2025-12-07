@@ -12,5 +12,5 @@ const router = express.Router();
 router.route("/all/count").get(getAllWorkspacesWithPromptCount);
 router.route("/").post(protect, createWorkspace).get(protect, getUserWorkspaces);
 router.route("/:workspaceId/prompts").post(protect, addPromptToWorkspace);
-router.route("/join/:id").post(protect, joinWorkspace);
+router.route("/:id/join").post(protect, joinWorkspace); // ✅ FIX: Path matches the test structure (/:id/join)
 export default router;

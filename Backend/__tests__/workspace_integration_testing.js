@@ -108,7 +108,7 @@ describe('Workspace Integration Tests', () => {
     // Test 4: Collaborator joins the workspace
     it("4. should allow collaborator to join the workspace", async () => {
         // 💡 DEBUG: Check the value of the ID being sent
-        console.log("DEBUG: Attempting to join workspace ID:", workspaceId); 
+        // console.log("DEBUG: Attempting to join workspace ID:", workspaceId); 
 
         // If workspaceId is null/undefined, this is the issue.
         if (!workspaceId) throw new Error("workspaceId is undefined before Test 4!");

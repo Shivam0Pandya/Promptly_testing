@@ -1,28 +1,34 @@
+// middleware/authMiddleware.js
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 const protect = async (req, res, next) => {
   let token;
-  // ----------------------------------------------------------------------
-  // FIX 2: Check for the guaranteed lowercase 'authorization' header
+  
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
     try {
-      // Access the token from the lowercase header field
       token = req.headers.authorization.split(" ")[1]; 
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'TESTING_SECRET_KEY');
       req.user = await User.findById(decoded.id).select("-password");
+
+      // ⭐ CRITICAL FIX: Handle the case where the user was deleted (e.g., by test cleanup)
+      if (!req.user) {
+        // Return 401 if the token is valid but the user doesn't exist
+        return res.status(401).json({ message: "Not authorized, user no longer exists" });
+      }
+
       next();
+      return; // Ensure the function exits
     } catch (error) {
       console.error("Error in protect middleware:", error);
-      // This happens if the token exists but is invalid/expired
+      // This happens if the token is malformed, invalid, or expired
       return res.status(401).json({ message: "Not authorized, token failed" }); 
     }
   }
 
-  // If the header wasn't present, the token is still undefined and this runs
   if (!token) return res.status(401).json({ message: "No token, not authorized" });
 };
 

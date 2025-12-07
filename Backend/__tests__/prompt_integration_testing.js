@@ -61,7 +61,7 @@ beforeAll(async () => {
     });
     
     initialPromptId = initialPrompt._id;
-    console.log("DEBUG: Initial Prompt ID set to:", initialPromptId); // Verify ID is set
+    // console.log("DEBUG: Initial Prompt ID set to:", initialPromptId); // Verify ID is set
     
     // 3. CRITICAL TEST FIX: Correct the property access in Test 5
     // Ensure you change line 151 in your test file:
@@ -99,20 +99,20 @@ describe('Prompt Versioning & Upvote Tests', () => {
         initialPromptId = res.body._id;
         
         // 💡 DEBUG CHECK A: Log the created ID to your console
-        console.log("DEBUG CHECK A: Prompt Created ID:", initialPromptId.toString()); 
+        // console.log("DEBUG CHECK A: Prompt Created ID:", initialPromptId.toString()); 
             
         // 💡 DEBUG CHECK B: Immediately verify the prompt is found in the DB
-        const verification = await Prompt.findById(initialPromptId);
-        console.log("DEBUG CHECK B: Prompt Found in DB:", !!verification); // Should log 'true'
+        // const verification = await Prompt.findById(initialPromptId);
+        // console.log("DEBUG CHECK B: Prompt Found in DB:", !!verification); // Should log 'true'
     });
 
     // --- Test 1: Collaborator Requests Update (Pending Update) ---
     it('1. should submit an update request (pending update) from a non-owner', async () => {
         // 💡 DEBUG CHECK C: Log the ID being used in the actual test request
-        console.log("DEBUG CHECK C: ID Used in Test 1 Request:", initialPromptId.toString());
-        
+        // console.log("DEBUG CHECK C: ID Used in Test 1 Request:", initialPromptId.toString());
+
         const suggestedBody = 'The updated body suggested by the collaborator v2.';
-        const res = await authenticatedRequest('post', `/api/prompts/${initialPromptId}/update`, collaboratorToken)
+        const res = await authenticatedRequest('post', `/api/prompts/${initialPromptId}/request-update`, collaboratorToken)
             .send({ body: suggestedBody });
 
         expect(res.statusCode).toBe(201);
@@ -130,7 +130,7 @@ describe('Prompt Versioning & Upvote Tests', () => {
     
     // --- Test 2: Owner Approves Pending Update ---
     it('2. should allow the owner to approve the pending update request', async () => {
-        const res = await authenticatedRequest('put', `/api/prompts/${initialPromptId}/updates/${pendingUpdateId}/approve`, ownerToken);
+        const res = await authenticatedRequest('put', `/api/prompts/${initialPromptId}/approve/${pendingUpdateId}`, ownerToken);
 
         expect(res.statusCode).toBe(200);
         expect(res.body.message).toBe("Prompt update approved and applied");
@@ -145,7 +145,7 @@ describe('Prompt Versioning & Upvote Tests', () => {
 
     // --- Test 3: Upvote Toggle (Add) ---
     it('3. should allow a user to upvote a prompt', async () => {
-        const res = await authenticatedRequest('post', `/api/prompts/${initialPromptId}/upvote`, collaboratorToken);
+        const res = await authenticatedRequest('put', `/api/prompts/${initialPromptId}/upvote`, collaboratorToken);
 
         expect(res.statusCode).toBe(200);
         expect(res.body.message).toBe("Upvoted");
@@ -160,7 +160,7 @@ describe('Prompt Versioning & Upvote Tests', () => {
     
     // --- Test 4: Upvote Toggle (Remove) ---
     it('4. should allow the same user to remove their upvote', async () => {
-        const res = await authenticatedRequest('post', `/api/prompts/${initialPromptId}/upvote`, collaboratorToken);
+        const res = await authenticatedRequest('put', `/api/prompts/${initialPromptId}/upvote`, collaboratorToken);
 
         expect(res.statusCode).toBe(200);
         expect(res.body.message).toBe("Upvote removed");
@@ -177,12 +177,12 @@ describe('Prompt Versioning & Upvote Tests', () => {
     it('5. should return 403 if a non-owner tries to approve an update', async () => {
         // First, create a new pending update
         const suggestedBody = 'Another update request.';
-        const updateRes = await authenticatedRequest('post', `/api/prompts/${initialPromptId}/update`, collaboratorToken)
+        const updateRes = await authenticatedRequest('post', `/api/prompts/${initialPromptId}/request-update`, collaboratorToken)
             .send({ body: suggestedBody });
         const newPendingUpdateId = updateRes.body.pendingUpdate._id;
 
         // Try to approve it with the COLLABORATOR's token
-        const res = await authenticatedRequest('put', `/api/prompts/${initialPromptId}/updates/${newPendingUpdateId}/approve`, collaboratorToken);
+        const res = await authenticatedRequest('put', `/api/prompts/${initialPromptId}/approve/${newPendingUpdateId}`, collaboratorToken);
 
         expect(res.statusCode).toBe(403);
         expect(res.body.message).toBe("Not authorized to approve updates");

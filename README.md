@@ -1,17 +1,20 @@
-# PROJECT IMPLEMENTATION & TESTING  
-## Promptly – AI Prompt Management & Workspace System  
+# PROJECT IMPLEMENTATION & TESTING
 
-### Course: Software Engineering Project  
+## Promptly – AI Prompt Management & Workspace System
+
+### Course: Software Engineering Project
 
 ### Submitted by:
-- **Paritosh Tiwari – IMT2023123**  
-- **Shivam Pandya – IMT2023091**  
-- **Parv Sharma – IMT2023514**  
+
+- **Paritosh Tiwari – IMT2023123**
+- **Shivam Pandya – IMT2023091**
+- **Parv Sharma – IMT2023514**
 - **Krish Kathiria – IMT2023045**
 
 ---
 
-# Project Overview  
+# Project Overview
+
 **Promptly** is a full-stack application designed to store, organize, share, and manage AI prompts inside workspaces.  
 It includes user authentication, prompt creation, commenting, upvotes, workspace filtering, and modern UI workflows.
 
@@ -20,73 +23,85 @@ https://github.com/Shivam0Pandya/Promptly_testing.git
 
 ---
 
-# Backend  
-- Node.js + Express REST API  
-- MongoDB database  
-- JWT authentication middleware  
-- CRUD operations for prompts, workspaces & users  
-- Comments + Upvotes  
-- CORS + Protected routes  
+# Backend
+
+- Node.js + Express REST API
+- MongoDB database
+- JWT authentication middleware
+- CRUD operations for prompts, workspaces & users
+- Comments + Upvotes
+- CORS + Protected routes
 
 ---
 
-# Frontend  
-- React + Vite  
-- Login & Register pages  
-- Dashboard with workspace navigation  
-- View prompts & prompt details  
-- Add prompts, comments, upvotes  
-- Global workspace search  
-- Responsive UI with TailwindCSS  
-- LocalStorage token persistence  
+# Frontend
+
+- React + Vite
+- Login & Register pages
+- Dashboard with workspace navigation
+- View prompts & prompt details
+- Add prompts, comments, upvotes
+- Global workspace search
+- Responsive UI with TailwindCSS
+- LocalStorage token persistence
 
 ---
 
-# Setup Instructions  
+# Setup Instructions
 
 ## Clone the repository
+
 git clone https://github.com/Shivam0Pandya/Promptly_testing.git \
 cd Promptly_testing
 
 # Backend Setup
+
 cd Backend\
 npm install\
 npm install mongoose jsonwebtoken express dotenv cors\
-npm run dev   # or node server.js
+npm run dev # or node server.js
 
 ## Environment Variables Required
+
 MONGO_URI=mongodb://localhost:27017/promptlydb \
 JWT_SECRET=your_secret \
 PORT=5000
 
 ## Run backend tests
+
 npm install \
 npm test
 
 # Frontend Setup
+
 cd Frontend \
 npm install \
 npm install axios react-router-dom lucid-react \
-npm install --save-dev jest @testing-library/react @testing-library/jest-dom @testing-library/user-event whatwg-fetch
+npm install --save-dev jest @testing-library/react @testing-library/jest-dom @testing-library/
+user-event whatwg-fetch
+npm install --save-dev @babel/core @babel/preset-env @babel/preset-react babel-jest/ identity-obj-proxy \
 
 ## Run frontend tests
+
 npm test \
-npm run dev   # start UI
+npm run dev # start UI
 
 # Test Files
 
 ## Frontend
-Frontend/src/tests/unit/AuthView.test.jsx  \
-Frontend/src/tests/unit/Sidebar.test.jsx  \
-Frontend/src/tests/unit/Header.test.jsx  \
-Frontend/src/tests/integration/AuthFlow.int.test.jsx  \
-Frontend/src/tests/integration/DashboardFlow.int.test.js 
+
+Frontend/src/tests/unit/AuthView.test.jsx \
+Frontend/src/tests/unit/Sidebar.test.jsx \
+Frontend/src/tests/unit/Header.test.jsx \
+Frontend/src/tests/integration/AuthFlow.int.test.jsx \
+Frontend/src/tests/integration/DashboardFlow.int.test.js
 
 ## Backend
-Backend/tests/auth.integrate_testing.js  \
-Backend/tests/prompt_integration_testing.js  \
-Backend/tests/workspace_integration_testing.js  \
-Backend/tests/prompt_unit_testing.js  \
+
+Backend/tests/auth.integrate_testing.js \
+Backend/tests/prompt_integration_testing.js \
+Backend/tests/workspace_integration_testing.js \
+Backend/tests/prompt_unit_testing.js \
 Backend/tests/user_model_unittesting.js
 
 ## Backend Testcases Description
@@ -145,8 +160,6 @@ Backend/tests/user_model_unittesting.js
 | **DashboardFlow.int**     | Navigation + workspace loading              |
 
 ## Backend Passing Tests – Terminal Screenshot
-md 
+
+md
 ![Backend Tests Output](./assets/backend-test-screenshot.png)
-
-
-

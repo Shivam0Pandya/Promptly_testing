@@ -78,7 +78,7 @@ cd Frontend \
 npm install \
 npm install axios react-router-dom lucid-react \
 npm install --save-dev jest @testing-library/react @testing-library/jest-dom @testing-library/
-user-event whatwg-fetch
+user-event whatwg-fetch \
 npm install --save-dev @babel/core @babel/preset-env @babel/preset-react babel-jest/ identity-obj-proxy \
 
 ## Run frontend tests

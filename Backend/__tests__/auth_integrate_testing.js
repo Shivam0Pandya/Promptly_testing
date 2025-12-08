@@ -34,13 +34,13 @@ beforeAll(async () => {
     
     // Connect to the dedicated test database
     await mongoose.connect(TEST_DB_URI);
-}, 20000); // Increased timeout for DB connection
+}, 60000); // Increased timeout for DB connection
 
 afterAll(async () => {
     // Clean up and close connection
     await User.deleteMany({});
     await mongoose.connection.close();
-}, 20000);
+}, 60000);
 
 // --- INTEGRATION TESTS START ---
 

@@ -16,19 +16,19 @@ describe('User Model Unit Tests', () => {
         
         // Connect to the dedicated test database
         await mongoose.connect(TEST_DB_URI);
-        console.log("✅ Connected to test database successfully.");
-    }, 20000); // Increased timeout for DB connection
+        // console.log("✅ Connected to test database successfully.");
+    }, 60000); // Increased timeout for DB connection
 
     // Clean up the database after *each* test to ensure tests are isolated
     afterEach(async () => {
         // Delete all users created during the test
         await User.deleteMany({});
-    }, 20000);
+    }, 60000);
 
     // Close the connection after all tests are done
     afterAll(async () => {
         await mongoose.connection.close();
-        console.log("⚠️ Test database connection closed.");
+        // console.log("⚠️ Test database connection closed.");
     });
 
     // Test 1: Ensure password is hashed before saving

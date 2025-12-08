@@ -58,14 +58,14 @@ beforeAll(async () => {
     const collabRes = await User.create(collaboratorData);
     collaboratorId = collabRes._id;
     collaboratorToken = getTestToken(collaboratorId);
-}, 20000); // Increased timeout for DB connection
+}, 60000); // Increased timeout for DB connection
 
 afterAll(async () => {
     // Clean up all data
     await User.deleteMany({});
     await Workspace.deleteMany({});
     await mongoose.connection.close();
-}, 20000);
+}, 60000);
 
 describe('Workspace Integration Tests', () => {
 

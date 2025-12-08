@@ -1,161 +1,152 @@
-<<<<<<< HEAD
-⚡ Promptly: Collaborative Prompt Engineering Platform
+# PROJECT IMPLEMENTATION & TESTING  
+## Promptly – AI Prompt Management & Workspace System  
+
+### Course: Software Engineering Project  
+
+### Submitted by:
+- **Paritosh Tiwari – IMT2023123**  
+- **Shivam Pandya – IMT2023091**  
+- **Parv Sharma – IMT2023514**  
+- **Krish Kathiria – IMT2023045**
+
+---
+
+# Project Overview  
+**Promptly** is a full-stack application designed to store, organize, share, and manage AI prompts inside workspaces.  
+It includes user authentication, prompt creation, commenting, upvotes, workspace filtering, and modern UI workflows.
+
+**Git Repository:**  
+https://github.com/Shivam0Pandya/Promptly_testing.git
+
+---
+
+# Backend  
+- Node.js + Express REST API  
+- MongoDB database  
+- JWT authentication middleware  
+- CRUD operations for prompts, workspaces & users  
+- Comments + Upvotes  
+- CORS + Protected routes  
+
+---
+
+# Frontend  
+- React + Vite  
+- Login & Register pages  
+- Dashboard with workspace navigation  
+- View prompts & prompt details  
+- Add prompts, comments, upvotes  
+- Global workspace search  
+- Responsive UI with TailwindCSS  
+- LocalStorage token persistence  
+
+---
+
+# Setup Instructions  
+
+## Clone the repository
+git clone https://github.com/Shivam0Pandya/Promptly_testing.git \
+cd Promptly_testing
+
+# Backend Setup
+cd Backend\
+npm install\
+npm install mongoose jsonwebtoken express dotenv cors\
+npm run dev   # or node server.js
+
+## Environment Variables Required
+MONGO_URI=mongodb://localhost:27017/promptlydb \
+JWT_SECRET=your_secret \
+PORT=5000
+
+## Run backend tests
+npm install \
+npm test
+
+# Frontend Setup
+cd Frontend \
+npm install \
+npm install axios react-router-dom lucid-react \
+npm install --save-dev jest @testing-library/react @testing-library/jest-dom @testing-library/user-event whatwg-fetch
+
+## Run frontend tests
+npm test \
+npm run dev   # start UI
+
+# Test Files
+
+## Frontend
+Frontend/src/tests/unit/AuthView.test.jsx  \
+Frontend/src/tests/unit/Sidebar.test.jsx  \
+Frontend/src/tests/unit/Header.test.jsx  \
+Frontend/src/tests/integration/AuthFlow.int.test.jsx  \
+Frontend/src/tests/integration/DashboardFlow.int.test.js 
+
+## Backend
+Backend/tests/auth.integrate_testing.js  \
+Backend/tests/prompt_integration_testing.js  \
+Backend/tests/workspace_integration_testing.js  \
+Backend/tests/prompt_unit_testing.js  \
+Backend/tests/user_model_unittesting.js
+
+## Backend Testcases Description
+
+### User Authentication & Profile
+
+| Test Case                               | Description                                  |
+| --------------------------------------- | -------------------------------------------- |
+| **User Registration (Success)**         | Creates a new user → expects 201 + JWT token |
+| **User Registration (Failure: Exists)** | Existing email → 400                         |
+| **User Login (Success)**                | Valid login → 200 + JWT token                |
+| **User Login (Failure: Invalid Creds)** | Wrong email/password → 401                   |
+| **Fetch User Profile**                  | Valid token → returns user (no password)     |
+| **Fetch User Profile (No Token)**       | Missing token → 401                          |
+| **Fetch User Profile (Invalid Token)**  | Invalid/expired token → 401                  |
+
+### Prompt Management & Versioning
+
+| Test Case                         | Description                                   |
+| --------------------------------- | --------------------------------------------- |
+| **Create Prompt (Success)**       | New prompt created → 201 and version = 1      |
+| **Create Prompt (Missing Field)** | Missing field → 400                           |
+| **Get Single Prompt (Success)**   | Fetch valid ID → 200                          |
+| **Get Single Prompt (Not Found)** | Invalid ID → 404                              |
+| **Submit Update Request**         | Non-owner submits update → 201 pending update |
+| **Owner Approves Update**         | Owner approves → 200 and body updated         |
+| **Owner Rejects Update**          | Reject → 200 body unchanged                   |
+| **Non-Owner Approves Update**     | Unauthorized → 403                            |
+| **Upvote Prompt**                 | Upvote increments count                       |
+| **Remove Upvote**                 | Removes upvote → decrements count             |
+| **Get Prompt History**            | Returns all versions                          |
+
+### Workspace Management
+
+| Test Case                                | Description                                       |
+| ---------------------------------------- | ------------------------------------------------- |
+| **Create Workspace (Success)**           | Workspace created → 201; creator added to members |
+| **User Workspace Update**                | Workspace ID added to User.workspaces             |
+| **Join Workspace**                       | Collaborator joins public workspace               |
+| **Join Workspace Already Member**        | Should return 200/400                             |
+| **Get All Workspaces (Owner)**           | isOwner = true                                    |
+| **Get All Workspaces (Collaborator)**    | isOwner = false                                   |
+| **Leave Workspace**                      | User removed from workspace & user list           |
+| **Owner Deletes Workspace**              | Valid delete → 200                                |
+| **Collaborator Delete Workspace (Auth)** | Unauthorized → 403                                |
+
+## Frontend Testcases Description
+
+| Test Case                 | Description                                 |
+| ------------------------- | ------------------------------------------- |
+| **AuthView**              | Email, password fields & login button exist |
+| **Sidebar**               | Displays workspace list                     |
+| **Header**                | Search bar exists                           |
+| **PromptDetailPage**      | Renders prompt content                      |
+| **AuthFlow.int.test.jsx** | Simulates login & saves token               |
+| **DashboardFlow.int**     | Navigation + workspace loading              |
+
+## Backend Passing Tests – Terminal Screenshot
+md 
+![Backend Tests Output](./assets/backend-test-screenshot.png)
 
-Promptly is a state-of-the-art MERN stack application designed to centralize and govern the creation, organization, and sharing of generative AI prompts. It enforces prompt quality through a secure versioning and review workflow, making it the ideal solution for teams looking to standardize their AI inputs.
 
-🔗 Live Demo & Deployment
 
-Experience the platform live!
-
-Component
-
-Deployment Service
-
-Status
-
-URL
-
-Frontend (React)
-
-Vercel
-
-Live
-
-https://promptly-kn16.vercel.app/
-
-Backend API (Express/Node)
-
-Render
-
-Live
-
-https://promptly-3gli.onrender.com/
-
-✨ Key Features
-
-Active Workspaces: A combined view of all collaboration spaces the user owns or has joined.
-
-Prompt Versioning & Review: A robust system where prompt edits are managed through Pending Updates. Workspace owners must review and accept changes, ensuring data integrity and quality control.
-
-Discovery: An Explore Page allowing users to browse and join public workspaces, fostering community growth.
-
-Engagement: Users can express interest in high-quality prompts via a Like/Upvote functionality.
-
-Security: Authentication and authorization managed via Mongoose models and Express controllers to enforce collaboration rules and secure data access.
-
-🛠️ Tech Stack
-
-This project is built using the MERN stack with modern JavaScript features.
-
-Layer
-
-Technology
-
-Description
-
-Frontend
-
-React
-
-Single-page application for a responsive and dynamic user interface.
-
-Backend
-
-Node.js, Express.js
-
-Robust RESTful API handling business logic and authentication.
-
-Database
-
-MongoDB (Mongoose)
-
-Flexible, non-relational database for storing user, workspace, and prompt data.
-
-Security
-
-JWT (JSON Web Tokens)
-
-Secure user authentication and session management.
-
-Utilities
-
-jwt-decode
-
-Client-side utility for decoding JWT payloads.
-
-💻 Local Setup and Installation
-
-To run Promptly locally, follow these steps. This project assumes a standard MERN directory structure (e.g., separate client and server folders).
-
-Prerequisites
-
-Node.js (LTS recommended)
-
-npm
-
-MongoDB Instance (local or cloud-hosted)
-
-1. Clone the Repository
-
-git clone [YOUR_REPOSITORY_URL_HERE]
-cd promptly
-
-
-2. Backend Installation (Server)
-
-Navigate to your server directory and install dependencies:
-
-cd server # Adjust path as necessary
-npm install
-npm install jwt-decode # If used specifically in the backend
-
-
-Environment Configuration (server/.env)
-
-Create a .env file in your server directory:
-
-# MongoDB connection string
-MONGO_URI=mongodb://localhost:27017/promptlyDB 
-
-# Secret for signing JWTs (MUST be a long, random string)
-JWT_SECRET=YOUR_RANDOM_SECRET_KEY
-
-# Port for the API server
-PORT=5000 
-
-
-3. Frontend Installation (Client)
-
-Navigate to your client directory and install dependencies:
-
-cd ../client # Adjust path as necessary
-npm install
-
-
-Environment Configuration (client/.env)
-
-Create a .env file in your client directory. Ensure REACT_APP_API_URL points to your running backend server (or the live Render URL for hybrid testing).
-
-# Base URL for the Express API
-REACT_APP_API_URL=http://localhost:5000/api 
-
-
-4. Run the Application
-
-Start the API Server
-
-# In the server directory
-npm start 
-
-
-Start the React Frontend
-
-# In the client directory
-npm start
-
-
-The application should now be accessible locally at http://localhost:3000.
-=======
-# Promptly_testing
-Testing of developed website promptly
->>>>>>> d5ebb643bff723c18b49a9306aa7033c1b256259
